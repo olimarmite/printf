@@ -12,8 +12,8 @@ int	main(void)
 	// ft_printf("\n\n");
 	void *ptr = malloc(1);
 
-	printf("%ld", LONG_MIN);
-	ft_printf("[%i]\n", ft_printf(" %c %c %c ", 0, '1', '2'));
+	//printf("%ld", LONG_MIN);
+	ft_printf("[%bob]\n", ft_printf(" %c %c %c ", 0, '1', '2'));
 	ft_printf("[%i]\n",ft_printf("Hello %c\n", 0));
 	ft_printf("[%i]\n",ft_printf("Hello %c\n", 'H'));
 	ft_printf("[%i]\n",ft_printf("Hello %c%c\n", 'H', 'B'));
@@ -32,9 +32,9 @@ int	main(void)
 	ft_printf("[%i]\n",ft_printf(" %p %p ", 0 , 0));
 	ft_printf("[%i]\n",ft_printf(" %p %p ", LONG_MIN, LONG_MAX));
 
-	ft_printf("[%i]\n",ft_printf(" %% "));
-	ft_printf("[%i]\n",ft_printf("qwhdqwkhqi % qwlkdq; ;  "));
-	ft_printf("[%i]\n",ft_printf("%"));
+	//ft_printf("[%i]\n",ft_printf(" %% "));
+	//ft_printf("[%i]\n",ft_printf("qwhdqwkhqi % qwlkdq; ;  "));
+	//ft_printf("[%i]\n",ft_printf("%"));
 
 
 

@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:54:58 by olimarti          #+#    #+#             */
-/*   Updated: 2022/12/19 19:42:46 by olimarti         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:31:25 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,68 +28,6 @@
 #define HEX_UC_ALPHABET "0123456789ABCDEF"
 #define HEX_LC_ALPHABET "0123456789abcdef"
 #define DEC_ALPHABET "0123456789"
-
-int	ft_putstr(char *s)
-{
-	size_t	len;
-
-	if (!s)
-		return (ft_putstr("(null)"));
-	len = 0;
-	while (s[len] != 0)
-		len++;
-	write(1, s, len);
-	return (len);
-}
-
-int	ft_putchar(const char c)
-{
-	write(1, &c, 1);
-	return (1);
-}
-
-int	ft_putnbr_base(long n, long base, const char *base_alphabet)
-{
-	int	out;
-
-	out = 0;
-	if (n < 0)
-	{
-		ft_putchar('-');
-		n = n * -1;
-		out += 1;
-	}
-	if (n < base)
-	{
-		ft_putchar(base_alphabet[n % base]);
-		out += 1;
-	}
-	else
-	{
-		out = 1 + out + ft_putnbr_base(n / base, base, base_alphabet);
-		ft_putchar(base_alphabet[n % base]);
-	}
-	return (out);
-}
-
-int	ft_put_u_nbr_base(unsigned long n, unsigned long base,
-		const char *base_alphabet)
-{
-	int	out;
-
-	out = 0;
-	if (n < base)
-	{
-		ft_putchar(base_alphabet[n % base]);
-		out += 1;
-	}
-	else
-	{
-		out = 1 + out + ft_putnbr_base(n / base, base, base_alphabet);
-		ft_putchar(base_alphabet[n % base]);
-	}
-	return (out);
-}
 
 //return 0 : match
 int	pattern_matcher(char const *str, const char *pattern)
