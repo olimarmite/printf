@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/19 15:54:58 by olimarti          #+#    #+#             */
+/*   Updated: 2022/12/19 19:42:46 by olimarti         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -7,11 +19,12 @@
 #define STR_PATTERN "s"
 #define PTR_PATTERN "p"
 #define DEC_PATTERN "d"
-#define INT_PATTERN "i"
+#define INT_PATTERN "bob"
 #define U_INT_PATTERN "u"
 #define HEX_PATTERN "x"
 #define HEX_UC_PATTERN "X"
 #define PERCENT_PATTERN "%"
+
 #define HEX_UC_ALPHABET "0123456789ABCDEF"
 #define HEX_LC_ALPHABET "0123456789abcdef"
 #define DEC_ALPHABET "0123456789"
@@ -123,7 +136,7 @@ int	number_handler(const char *str, int *letter_count, va_list *argprt, int *i)
 	return (1);
 }
 
-int	text_handler(const char *str, int *letter_count, va_list *argprt, int *i)
+int	text_handler(const char *str, size_t *letter_count, va_list *argprt, int *i)
 {
 	if (pattern_matcher(str + *i, CHR_PATTERN) == 0)
 		*letter_count += ft_putchar(va_arg(*argprt, int));
@@ -134,32 +147,41 @@ int	text_handler(const char *str, int *letter_count, va_list *argprt, int *i)
 	return (1);
 }
 
-//return -1 if err
-int	flag_handler(const char *str, int *letter_count, va_list *argprt, int *i)
+int	ptr_handler(const char *str, size_t *letter_count, va_list *argprt, int *i)
 {
 	void	*current_arg;
 
-	if ((text_handler(str, letter_count, argprt, i) || number_handler(str,
-				letter_count, argprt, i) || pattern_matcher(str + *i,
-				PTR_PATTERN)) == false)
-		else if (pattern_matcher(str + *i, PTR_PATTERN) == 0)
-		{
-			current_arg = (void *)va_arg(*argprt, unsigned long);
-			if (null_handler(current_arg, "(nil)", letter_count) == 0)
-			{
-				*letter_count += ft_putstr("0x");
-				*letter_count += ft_put_u_nbr_base((unsigned long)current_arg,
-						16, HEX_LC_ALPHABET);
-			}
-		}
-	else if (pattern_matcher(str + *i, PERCENT_PATTERN) == 0)
-		*letter_count += ft_putchar('%');
-	else if (str[*i] == '\0')
-		return (-1);
-	else
+	if (pattern_matcher(str + *i, PTR_PATTERN) == 0)
 	{
-		*letter_count += ft_putchar('%');
-		return (0);
+		current_arg = (void *)va_arg(*argprt, unsigned long);
+		if (null_handler(current_arg, "(nil)", letter_count) == 0)
+		{
+			*letter_count += ft_putstr("0x");
+			*letter_count += ft_put_u_nbr_base(
+					(unsigned long)current_arg, 16, HEX_LC_ALPHABET);
+		}
+		return (1);
+	}
+	return (0);
+}
+
+//return -1 if err
+int	flag_handler(const char *str, size_t *letter_count, va_list *argprt, int *i)
+{
+	if ((text_handler(str, letter_count, argprt, i)
+			|| number_handler(str, letter_count, argprt, i)
+			|| ptr_handler(str, letter_count, argprt, i)) == 0)
+	{
+
+		if (pattern_matcher(str + *i, PERCENT_PATTERN) == 0)
+			*letter_count += ft_putchar('%');
+		else if (str[*i] == '\0')
+			return (-1);
+		else
+		{
+			*letter_count += ft_putchar('%');
+			return (0);
+		}
 	}
 	(*i)++;
 	return (1);
@@ -167,7 +189,7 @@ int	flag_handler(const char *str, int *letter_count, va_list *argprt, int *i)
 
 int	ft_printf(const char *str, ...)
 {
-	size_t	i;
+	int		i;
 	size_t	letter_count;
 	va_list	argprt;
 
