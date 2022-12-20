@@ -6,14 +6,13 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 19:55:43 by olimarti          #+#    #+#             */
-/*   Updated: 2022/12/20 12:38:09 by olimarti         ###   ########.fr       */
+/*   Updated: 2022/12/20 13:37:03 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printers.h"
 
-
-int	ft_printf_percent()
+int	ft_printf_percent(void)
 {
 	return (ft_putchar('%'));
 }

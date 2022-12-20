@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 10:54:56 by olimarti          #+#    #+#             */
-/*   Updated: 2022/12/20 13:19:29 by olimarti         ###   ########.fr       */
+/*   Updated: 2022/12/20 13:38:16 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ int	ft_printf_int(va_list *argptr);
 int	ft_printf_u_int(va_list *argptr);
 //others
 int	ft_printf_ptr(va_list *argptr);
-int	ft_printf_percent();
+int	ft_printf_percent(void);
 
 #endif

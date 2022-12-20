@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 10:54:56 by olimarti          #+#    #+#             */
-/*   Updated: 2022/12/20 11:36:42 by olimarti         ###   ########.fr       */
+/*   Updated: 2022/12/20 13:36:42 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <limits.h>
 # include "utils/utils.h"
 # include "printers/printers.h"
-
 
 # define CHR_PATTERN "c"
 # define STR_PATTERN "s"
