@@ -13,7 +13,7 @@ int	main(void)
 	void *ptr = malloc(1);
 
 	//printf("%ld", LONG_MIN);
-	ft_printf("[%bob]\n", ft_printf(" %c %c %c ", 0, '1', '2'));
+	ft_printf("[%i]\n", ft_printf(" %c %c %c ", 0, '1', '2'));
 	ft_printf("[%i]\n",ft_printf("Hello %c\n", 0));
 	ft_printf("[%i]\n",ft_printf("Hello %c\n", 'H'));
 	ft_printf("[%i]\n",ft_printf("Hello %c%c\n", 'H', 'B'));

@@ -6,30 +6,13 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:54:58 by olimarti          #+#    #+#             */
-/*   Updated: 2022/12/19 20:31:25 by olimarti         ###   ########.fr       */
+/*   Updated: 2022/12/20 13:17:57 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <unistd.h>
+#include "ft_printf.h"
 
-#define CHR_PATTERN "c"
-#define STR_PATTERN "s"
-#define PTR_PATTERN "p"
-#define DEC_PATTERN "d"
-#define INT_PATTERN "bob"
-#define U_INT_PATTERN "u"
-#define HEX_PATTERN "x"
-#define HEX_UC_PATTERN "X"
-#define PERCENT_PATTERN "%"
-
-#define HEX_UC_ALPHABET "0123456789ABCDEF"
-#define HEX_LC_ALPHABET "0123456789abcdef"
-#define DEC_ALPHABET "0123456789"
-
-//return 0 : match
+//return 1 : match
 int	pattern_matcher(char const *str, const char *pattern)
 {
 	if (pattern == NULL || str == NULL)
@@ -39,89 +22,31 @@ int	pattern_matcher(char const *str, const char *pattern)
 		pattern++;
 		str++;
 	}
-	return (*pattern != 0);
-}
-
-int	null_handler(void *value, char *null_str, size_t *letter_count)
-{
-	if (value == 0)
-	{
-		*letter_count += ft_putstr(null_str);
-		return (1);
-	}
-	return (0);
-}
-
-int	number_handler(const char *str, int *letter_count, va_list *argprt, int *i)
-{
-	if (pattern_matcher(str + *i, DEC_PATTERN) == 0 ||
-		pattern_matcher(str + *i, INT_PATTERN) == 0)
-		*letter_count += ft_putnbr_base(va_arg(*argprt, int), 10, DEC_ALPHABET);
-	else if (pattern_matcher(str + *i, HEX_UC_PATTERN) == 0)
-		*letter_count += ft_putnbr_base(va_arg(*argprt, unsigned int), 16,
-				HEX_UC_ALPHABET);
-	else if (pattern_matcher(str + *i, HEX_UC_PATTERN) == 0)
-		*letter_count += ft_putnbr_base(va_arg(*argprt, unsigned int), 16,
-				HEX_UC_ALPHABET);
-	else if (pattern_matcher(str + *i, HEX_PATTERN) == 0)
-		*letter_count += ft_putnbr_base(va_arg(*argprt, unsigned int), 16,
-				HEX_LC_ALPHABET);
-	else if (pattern_matcher(str + *i, U_INT_PATTERN) == 0)
-		*letter_count += ft_putnbr_base(va_arg(*argprt, unsigned int), 10,
-				DEC_ALPHABET);
-	else
-		return (0);
-	return (1);
-}
-
-int	text_handler(const char *str, size_t *letter_count, va_list *argprt, int *i)
-{
-	if (pattern_matcher(str + *i, CHR_PATTERN) == 0)
-		*letter_count += ft_putchar(va_arg(*argprt, int));
-	else if (pattern_matcher(str + *i, STR_PATTERN) == 0)
-		*letter_count += ft_putstr(va_arg(*argprt, char *));
-	else
-		return (0);
-	return (1);
-}
-
-int	ptr_handler(const char *str, size_t *letter_count, va_list *argprt, int *i)
-{
-	void	*current_arg;
-
-	if (pattern_matcher(str + *i, PTR_PATTERN) == 0)
-	{
-		current_arg = (void *)va_arg(*argprt, unsigned long);
-		if (null_handler(current_arg, "(nil)", letter_count) == 0)
-		{
-			*letter_count += ft_putstr("0x");
-			*letter_count += ft_put_u_nbr_base(
-					(unsigned long)current_arg, 16, HEX_LC_ALPHABET);
-		}
-		return (1);
-	}
-	return (0);
+	return (*pattern == 0);
 }
 
 //return -1 if err
-int	flag_handler(const char *str, size_t *letter_count, va_list *argprt, int *i)
+int	flag_handler(const char *str, size_t *letter_count, va_list *argprt)
 {
-	if ((text_handler(str, letter_count, argprt, i)
-			|| number_handler(str, letter_count, argprt, i)
-			|| ptr_handler(str, letter_count, argprt, i)) == 0)
-	{
-
-		if (pattern_matcher(str + *i, PERCENT_PATTERN) == 0)
-			*letter_count += ft_putchar('%');
-		else if (str[*i] == '\0')
-			return (-1);
-		else
-		{
-			*letter_count += ft_putchar('%');
-			return (0);
-		}
-	}
-	(*i)++;
+	if (pattern_matcher(str, CHR_PATTERN))
+		*letter_count += ft_printf_chr(argprt);
+	else if (pattern_matcher(str, STR_PATTERN))
+		*letter_count += ft_printf_str(argprt);
+	else if (pattern_matcher(str, DEC_PATTERN)
+		|| pattern_matcher(str, INT_PATTERN))
+		*letter_count += ft_printf_int(argprt);
+	else if (pattern_matcher(str, U_INT_PATTERN))
+		*letter_count += ft_printf_u_int(argprt);
+	else if (pattern_matcher(str, HEX_PATTERN))
+		*letter_count += ft_printf_hex(argprt, 0);
+	else if (pattern_matcher(str, HEX_UC_PATTERN))
+		*letter_count += ft_printf_hex(argprt, 1);
+	else if (pattern_matcher(str, PTR_PATTERN))
+		*letter_count += ft_printf_ptr(argprt);
+	else if (pattern_matcher(str, PERCENT_PATTERN))
+		*letter_count += ft_printf_percent();
+	else
+		return (0);
 	return (1);
 }
 
@@ -139,8 +64,9 @@ int	ft_printf(const char *str, ...)
 		if (str[i] == '%')
 		{
 			i++;
-			if (flag_handler(str, &letter_count, &argprt, &i) == -1)
+			if (*str == 0)
 				return (-1);
+			i += flag_handler(str + i, &letter_count, &argprt);
 		}
 		else
 		{

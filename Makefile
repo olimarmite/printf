@@ -1,36 +1,30 @@
 CC=cc
-CFLAGS= #-Wall -Wextra -Werror
-LIBFT_DIR=libft
-LIBFT_LIB= ${LIBFT_DIR}/libft.a
-SRCS=ft_printf.c
+CFLAGS= -Wall -Wextra -Werror
 NAME=libftprintf.a
-OBJS= ${SRCS:.c=.o}
-TEST_SRC=main.c
-HEADERS=ft_printf.h ${LIBFT_DIR}/libft.h
+UTILS_DIR=utils
+PRINTERS_DIR=printers
+PRINTERS_SRCS=ft_printf_chr.c  ft_printf_hex.c  ft_printf_percent.c  ft_printf_ptr.c  ft_printf_str.c ft_printf_int.c ft_printf_u_int.c
+UTILS_SRCS=ft_putchar.c  ft_putnbr_base.c  ft_putstr.c  ft_u_putnbr_base.c
+PRINTERS_SRCS_PATHS = $(addprefix $(PRINTERS_DIR)/, $(PRINTERS_SRCS))
+UTILS_SRCS_PATHS = $(addprefix $(UTILS_DIR)/, $(UTILS_SRCS))
 
-RM = rm -f
+SRCS=ft_printf.c $(PRINTERS_SRCS_PATHS) $(UTILS_SRCS_PATHS)
+OBJS= $(SRCS:.c=.o) # $(PRINTERS_SRCS_PATHS:.c=.o) $(UTILS_SRCS_PATHS:.c=.o)
 
-all: ${NAME}
 
-${NAME}: ${OBJS}
-	make -C ${LIBFT_DIR} all bonus
-	cp ${LIBFT_LIB} ${NAME}
-	ar -rc ${NAME} ${OBJS}
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	ar -rc $(NAME) $(OBJS)
+	@echo "Completed"
 
 .c.o:
-	${CC} -c ${CFLAGS} ${HEADERS} $<
+	$(CC) -c $(CFLAGS) $< -o $@
 
 clean:
-	${MAKE} -C ${LIBFT_DIR} fclean
-	${RM} ${OBJS} ${BONUS_OBJS}
+	rm -f $(OBJS)
 
 fclean: clean
-	${RM} ${NAME}
-	${RM} a.out
+	rm -f $(NAME)
 
 re: fclean all
-
-test: all
-	${CC} ${CFLAGS} ${NAME} ${TEST_SRC} ${OBJS} ${HEADERS}
-
-.PHONY: all bonus clean fclean re test
