@@ -6,7 +6,7 @@
 /*   By: olimarti <olimarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:54:58 by olimarti          #+#    #+#             */
-/*   Updated: 2022/12/20 13:17:57 by olimarti         ###   ########.fr       */
+/*   Updated: 2022/12/20 14:31:43 by olimarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	pattern_matcher(char const *str, const char *pattern)
 	return (*pattern == 0);
 }
 
-//return -1 if err
 int	flag_handler(const char *str, size_t *letter_count, va_list *argprt)
 {
 	if (pattern_matcher(str, CHR_PATTERN))

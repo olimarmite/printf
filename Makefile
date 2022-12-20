@@ -9,7 +9,7 @@ PRINTERS_SRCS_PATHS = $(addprefix $(PRINTERS_DIR)/, $(PRINTERS_SRCS))
 UTILS_SRCS_PATHS = $(addprefix $(UTILS_DIR)/, $(UTILS_SRCS))
 
 SRCS=ft_printf.c $(PRINTERS_SRCS_PATHS) $(UTILS_SRCS_PATHS)
-OBJS= $(SRCS:.c=.o) # $(PRINTERS_SRCS_PATHS:.c=.o) $(UTILS_SRCS_PATHS:.c=.o)
+OBJS= $(SRCS:.c=.o)
 
 
 all: $(NAME)
@@ -28,3 +28,5 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re
