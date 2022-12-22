@@ -30,10 +30,6 @@
 # define PTR_PATTERN "p"
 # define PERCENT_PATTERN "%"
 
-# define HEX_UC_ALPHABET "0123456789ABCDEF"
-# define HEX_LC_ALPHABET "0123456789abcdef"
-# define DEC_ALPHABET "0123456789"
-
 int	ft_printf(const char *str, ...);
 
 #endif
